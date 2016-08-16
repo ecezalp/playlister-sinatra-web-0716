@@ -1,0 +1,15 @@
+class Genre < ActiveRecord::Base
+ has_many :song_genres
+ has_many :songs, through: :song_genres
+ has_many :artists, through: :songs
+
+ def slug 
+    self.name.downcase.split(" ").join("-")
+  end
+
+  def self.find_by_slug(string)
+    unslugged = string.split("-").collect {|x| x.capitalize}.join(" ")
+    self.find_by(name: unslugged)
+  end
+
+end
